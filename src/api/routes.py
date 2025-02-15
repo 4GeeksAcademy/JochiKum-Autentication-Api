@@ -40,7 +40,7 @@ def handle_login():
         return jsonify({'msg' : 'one or more required fields are missing'}), 400
     check_user = User.query.filter_by(email=email, password=password).first()
     if check_user : 
-        access_token = create_access_token(identity=check_user.id)
+        access_token = create_access_token(identity=str(check_user.id))
         response_body = {
             "message": "Login Succesfull!",
             "token": access_token
@@ -53,7 +53,8 @@ def handle_login():
 @api.route('/private', methods=['GET'])
 @jwt_required()
 def handle_private():
+    print("Got passed JWT Check")
     user = User.query.get(get_jwt_identity())
     if not user:
         return jsonify({"msg":"user not found"}), 404
-    return jsonify({"msg": "access granted!", "user": user.serialize()}), 200  
+    return jsonify({"msg": "access garanted!", "user": user.serialize()}), 200  

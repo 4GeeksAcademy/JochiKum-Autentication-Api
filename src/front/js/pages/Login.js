@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 
 import { Context } from "../store/appContext";
 
-export const Login = () => {
+export const Login = ({ setToken }) => {
 	const { store, actions } = useContext(Context);
 	const navigate = useNavigate()
 	function singup(e) {
@@ -22,26 +22,11 @@ export const Login = () => {
 			return Response.json()
 		}).then((Result) => {
 			alert(Result.message)
-			sessionStorage.setItem("token", Result.token)
+			localStorage.setItem("token", Result.token)
+			setToken(Result.token)
 			navigate("/private")
 		})
 	}
-
-	// useEffect(()=>{
-	// 	fetch(process.env.BACKEND_URL+"/private",{
-	// 			method:"GET",
-	// 			headers: {
-	// 				"Authorization": "Bearer " + localStorage.getItem(), // obten el token
-	// 			}
-	// 		}).then((Response) => {
-	// 			if (!Response.ok){
-	// 				// saca al usuario de esta pagina y llevalo a login
-	// 			}
-	// 			return Response.json()
-	// 		}).then((Result) => {
-	// 			// no hagas nada
-	// 		})
-	// },[])
 
 	return (
 		<div className="container">
